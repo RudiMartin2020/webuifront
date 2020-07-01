@@ -10,6 +10,7 @@ Vue.use(Vuex);
 export default new Vuex.Store({
     state: {
         todos: [],
+        users: [],
         accessToken: null
     },
     mutations: {
@@ -33,6 +34,20 @@ export default new Vuex.Store({
         LOGOUT(state) {
             state.accessToken = null
         },
+        SELECT_USER(state, payload) {
+            state.users = payload;
+        },
+        DELETE_USER(state, user_id) {
+            const index = state.users.findIndex((t) => t.id === user_id);
+            state.users.splice(index, 1);
+        },
+        UPDATE_USER(state, userinfo) {
+            const index = state.users.findIndex((t) => t.id === userinfo.id);
+            state.users[index] = userinfo
+        },
+        INSERT_USER(state, payload) {
+            state.users.push(payload);
+        },
     },
     actions: {
         async login({ commit }, data) {
@@ -54,33 +69,57 @@ export default new Vuex.Store({
             commit('LOGOUT')
         },
         async getTodos({ commit }) {
-            const res = await http.get("/sample/todos");
+            const res = await http.get("/sample/userinfo/db2/get");
             if (res.status === 200) {
                 commit('SET_TODOS', res.data);
             }
         },
         async removeTodo({ commit }, todoId) {
-            const res = await http.remove(`/sample/todos/${todoId}`);
+            const res = await http.remove(`/sample/userinfo/db2/rmtodo/${todoId}`);
             if (res.status === 200) {
                 commit('DELETE_TODO', todoId);
             }
         },
         async saveTodo({ commit }, todo) {
-            const res = await http.post('/sample/todos', todo)
+            const res = await http.post('/sample/userinfo/db2/savetodo', todo)
             if (res.status === 200) {
                 commit('UPDATE_TODO', res.data)
             }
         },
         async addTodo({ commit }, payload) {
-            const res = await http.add('/sample/todos', payload)
+            const res = await http.add('/sample/userinfo/db2/addtodo', payload)
             if (res.status === 200) {
                 commit("ADD_TODO", res.data);
             }
         },
         async sendwait(context, todo) {
-            const res = await http.post('/sample/todos/sendwait', todo)
+            const res = await http.post('/sample/userinfo/sendwait', todo)
             if (res.status === 200) {
                 return res.data
+            }
+        },
+        async selectUsers({ commit }) {
+            const res = await http.get("/sample/userinfo/db2/getuser");
+            if (res.status === 200) {
+                commit('SELECT_USER', res.data);
+            }
+        },
+        async deleteUser({ commit }, user_id) {
+            const res = await http.remove(`/sample/userinfo/delete/${user_id}`);
+            if (res.status === 200) {
+                commit('DELETE_USER', user_id);
+            }
+        },
+        async updateUser({ commit }, users) {
+            const res = await http.post('/sample/userinfo/update', users)
+            if (res.status === 200) {
+                commit('UPDATE_USER', res.data)
+            }
+        },
+        async insertUser({ commit }, payload) {
+            const res = await http.add('/sample/userinfo/insert', payload)
+            if (res.status === 200) {
+                commit("INSERT_USER", res.data);
             }
         }
     },

@@ -1,10 +1,17 @@
 <template>
   <div>
-    <Todo
-      v-for="todo in todos"
-      :key="todo.id"
-      :todo="todo"
-    />
+    <tr>
+      <td>
+       <Todo v-for="todo in todos" :key="todo.id" :todo="todo" />
+      </td>
+      <td>
+       <Todo v-for="todo in todos" :key="todo.id" :todo="todo" />
+      </td>
+     
+    </tr>
+
+
+    
   </div>
 </template>
 

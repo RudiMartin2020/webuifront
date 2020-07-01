@@ -1,21 +1,9 @@
 <template>
   <div>
-    <tr>
-      <td>user_id
-    <input class="w-100 p-2" type="text" placeholder="Input user_id"
+    <input class="w-100 p-2" type="text" placeholder="Input USERID"
       @keyup.enter="add"
       v-model="text"
     />
-    </td>
-    <td>
-    user_name
-    <input class="w-100 p-2" type="text" placeholder="Input todo"
-      @keyup.enter="add"
-      v-model="text"
-    />    
-      </td>
-    </tr>
-
   </div>
 </template>
 
@@ -30,9 +18,9 @@ export default {
     }
   },
   methods: {
-    ...mapActions(['addTodo']),
+    ...mapActions(['insertUser']),
     add() {
-      this.addTodo({text: this.text})
+      this.insertUser({text: this.text})
       this.makeToast(this, `추가되었습니다.`)
       this.text = ''
     }

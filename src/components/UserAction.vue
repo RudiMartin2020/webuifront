@@ -1,14 +1,14 @@
 <template>
   <div class="mb-3 d-flex">
     <b-input-group size="lg" 
-      :prepend="todo.id.toString()" is_text=true
-      :append="todo.createAt | moment('YYYY-MM-DD HH:mm:ss')"   
+      :prepend="userinfo.user_id"
+      :append="userinfo.create_dtts | moment('YYYY-MM-DD HH:mm:ss')"
     >
-    
-      <!-- <b-form-input class="ml-2" readonly v-model="todo.text" 
-        @focus="enable" @blur="disable" @keyup.enter="save"/>    -->
-      <b-form-input class="ml-2" readonly v-model="todo.text" 
-        @focus="enable" @blur="disable" />          
+      <b-form-input class="ml-2" readonly v-model="userinfo.user_name" 
+        @focus="enable" @blur="disable" @keyup.enter="save"/>
+        <b-form-input class="ml-2" readonly v-bind ="userinfo.last_update_dtts"  
+        @focus="disable" @blur="disable" />
+
       <b-button class="ml-2" variant="danger" @click="remove">Del</b-button>
       <b-button class="ml-2 mr-2" variant="secondary" @click="doSendwait">SendWait</b-button>
     </b-input-group>
@@ -22,13 +22,13 @@ import toast from '@/mixins/toast.js'
 
 export default {
   props: {
-    todo: {
+    userinfo: {
       type: Object,
       required: true
     }
   },
   methods: {
-    ...mapActions(['removeTodo', 'saveTodo', 'sendwait']),
+    ...mapActions(['deleteUser', 'insertUser', 'sendwait']),
     enable(e) {
       e.target.readOnly = false
     },
@@ -36,12 +36,12 @@ export default {
       e.target.readOnly = true
     },
     remove() {
-      this.removeTodo(this.todo.id)
-      this.makeToast(this.$parent, `ID ${this.todo.id}이 삭제되었습니다.`)
+      this.deleteUser(this.userinfo.user_id)
+      this.makeToast(this.$parent, `ID ${this.userinfo.user_id}이 삭제되었습니다.`)
     },
     save(e) {
-      this.saveTodo(this.todo)
-      this.makeToast(this.$parent, `ID ${this.todo.id}이 수정되었습니다.`)
+      this.updateUser(this.userinfo)
+      this.makeToast(this.$parent, `ID ${this.userinfo.user_id}이 수정되었습니다.`)
       e.target.blur()
       e.target.readOnly = true
     },

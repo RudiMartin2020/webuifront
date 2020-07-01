@@ -8,6 +8,9 @@
         <b-button to="/todo" class="w-100">Todo</b-button>
       </b-nav-item>
       <b-nav-item>
+        <b-button to="/userinfo" class="w-100">UserInfo</b-button>
+      </b-nav-item>
+      <b-nav-item>
         <b-button to="/about" class="w-100">About</b-button>
       </b-nav-item>
     </b-nav>
